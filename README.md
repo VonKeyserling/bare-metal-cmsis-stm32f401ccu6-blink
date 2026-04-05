@@ -1,35 +1,43 @@
-# Ultra Bare-Minimal CMSIS Blink (STM32F401CCU6)
+<div>
 
-![License](https://img.shields.io/badge/license-GPL--3.0-blue.svg)
-![Language](https://img.shields.io/badge/language-C-orange.svg)
-![Platform](https://img.shields.io/badge/platform-STM32-blue)
+# 🚀 Bare-Metal CMSIS STM32F401CCU6 Blink
 
-A stripped-down, bare-metal "Blink LED" implementation for the **STM32F401CCU6** microcontroller. 
+[![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](#)
+[![Platform](https://img.shields.io/badge/platform-STM32F4-blue)](#)
+[![Framework](https://img.shields.io/badge/framework-CMSIS-orange)](#)
 
-This project demonstrates how to control the hardware using **pure CMSIS** (Cortex Microcontroller Software Interface Standard) without relying on heavy abstraction layers like HAL or LL, and uses a clean **Makefile** for the build process.
+*A minimalist bare-metal template for the STM32F401CCU6 (Black Pill), strictly based on the CMSIS library and automated via Makefile.*
 
-## 🎯 Project Goal
+</div>
 
-The main goal of this repository is to provide a minimalist template for developers who want to:
-* Understand the low-level startup process of the STM32F4.
-* Avoid the overhead and complexity of vendor-specific IDEs (CubeIDE, Keil, etc.).
-* Have a clean base for building efficient, register-level drivers.
+---
 
-## 🛠️ Hardware Requirements
+## 🛠️ Overview
+This repository provides a foundational infrastructure free of high-level abstractions (such as ST's HAL), intended for toolchain validation and direct register manipulation study.
 
-* **Microcontroller:** STM32F401CCU6 (Commonly found on the "Black Pill" development board).
-* **Debugger/Programmer:** ST-Link V2 (or compatible OpenOCD interface).
+## 💻 Hardware Specifications
+* **Microcontroller:** STM32F401CCU6 (ARM Cortex-M4F)
+* **Memory Map:** 256 KB Flash, 64 KB SRAM
+* **Test Output:** On-board LED connected to pin **PC13** (Active-Low logic).
 
-[Image of STM32F401CCU6 Black Pill pinout]
+## ⚙️ System Requirements
+The development environment assumes a Linux distribution. The following cross-compilation and flashing tools are mandatory:
+* `arm-none-eabi-gcc` (Compiler and Linker)
+* `make` (Build process automation)
+* `openocd` (Flashing and debugging via ST-Link v2 interface)
 
-> **Note:** The default code is configured to blink the onboard LED, usually connected to **PC13**.
+## 🚀 Build Commands
+The entire compilation process is encapsulated by the `Makefile`. The final artifacts (`.elf`, `.bin`, `.hex`, and `.map`) are isolated within the `build/` directory.
 
-## 📂 Project Structure
+| Action | Command |
+| :--- | :--- |
+| **Compile** | `make` |
+| **Clean** | `make clean` |
+| **Flash** | `make flash` |
 
-```text
-├── build/              # Compiled object files and binaries
-├── include/            # CMSIS headers and project definitions
-├── src/                # Source code (main.c, startup, etc.)
-├── linker.ld           # Linker script for memory layout
-├── Makefile            # Build configuration
-└── README.md           # This file
+## 🏗️ Internal Architecture
+* **Compilation Optimization:** The Makefile includes strict architecture flags (`-mcpu=cortex-m4`, `-mthumb`, `-mfloat-abi=hard`, `-mfpu=fpv4-sp-d16`) to utilize the hardware Floating-Point Unit (FPU).
+* **Linker Script:** Explicitly maps the base addresses and sizes of the RAM and Flash memory regions according to the reference manual.
+* **Startup:** Initialization code responsible for setting up the vector table, zeroing the `.bss` section in RAM, and transferring the `.data` section from Flash to RAM prior to executing the `main()` function.
+
+---
