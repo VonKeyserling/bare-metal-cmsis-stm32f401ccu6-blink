@@ -1,0 +1,14 @@
+[
+  {
+    "label": "Make All",
+    "command": "make",
+  },
+  {
+    "label": "Make Clean",
+    "command": "make clean",
+  },
+  {
+    "label": "Make and Flash STM32",
+    "command": "make clean && make flash",
+  },
+]
