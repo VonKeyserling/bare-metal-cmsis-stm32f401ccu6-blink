@@ -1,0 +1,22 @@
+[
+  {
+    "label": "Debug STM32",
+    "adapter": "GDB",
+    "build_task": "build",
+    "request": "launch",
+    "program": "$ZED_WORKTREE_ROOT/build/firmware.elf",
+    "target_triple": "arm-none-eabi",
+    "mi_mode": "gdb",
+    "mi_debug_adapter_path": "/usr/bin/gdb",
+    "debug_server_args": [
+      "openocd",
+      "-f", "interface/stlink.cfg",
+      "-f", "target/stm32f4x.cfg"
+    ],
+    "pre_run_commands": [
+      "target extended-remote localhost:3333",
+      "monitor reset halt",
+      "load"
+    ]
+  }
+]
